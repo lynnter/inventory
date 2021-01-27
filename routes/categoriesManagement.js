@@ -1,12 +1,11 @@
-// credentials to connect to db
-const credentials = require('./credentials');
 const express = require('express');
+const router = express.Router();
 const bcrypt = require('bcrypt');
 const crypto = require('crypto-js');
-const app = express();
-const PORT = 8085;
-
 const Sequelize = require('sequelize');
+// method of sequelize to give us access to search filter
+const { QueryTypes } = require('sequelize');
+const credentials = require('../credentials');
 
 //initial sequelize to connect to db
 const databseConnection = new Sequelize(
@@ -24,15 +23,9 @@ const databseConnection = new Sequelize(
   }
 );
 
-//create endpoints
-app.get('/', (req, res) => {
-  res.send('SUCCESS!!');
+//test connection
+router.get('/testconnection', (req, res) => {
+  res.send('API WORKS!');
 });
 
-//initialize routes
-const categoriesManagement = require('./routes/categoriesManagement');
-
-app.use('/api/categoriesmanagement', categoriesManagement);
-
-app.listen(PORT);
-console.log('server is running on http://127.0.0.1:' + PORT);
+module.exports = router;
