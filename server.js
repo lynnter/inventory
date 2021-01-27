@@ -26,4 +26,4 @@ const databseConnection = new Sequelize(
 );
 
 app.listen(PORT);
-console.log('server is running on http://127.0.0.1' + PORT);
+console.log('server is running on http://127.0.0.1:' + PORT);
