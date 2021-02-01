@@ -82,4 +82,32 @@ router.get('/fetch_all_categories', (req, res) => {
   }
 });
 
+//update
+router.put('/update_target_category', (req, res) => {
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  try {
+    const categoryId = req.body.categoryId;
+    Category.update(
+      {
+        //fields of model to update
+        categoryName: req.body.categoryName,
+        isDeleted: req.body.isDeleted,
+      },
+      {
+        //where clause
+        where: {
+          categoryId: categoryId,
+        },
+      }
+    ).then((count) => {
+      res.json('Rows updated: ' + count);
+    });
+  } catch (ex) {
+    res.json(ex);
+  }
+});
+
 module.exports = router;
