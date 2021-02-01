@@ -82,6 +82,26 @@ router.get('/fetch_all_categories', (req, res) => {
   }
 });
 
+//fetch specific category by id
+router.get('/fetch_category_by_id/:categoryId', async (req, res) => {
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+
+  try {
+    const categoryId = req.params.categoryId;
+    console.log(categoryId);
+    const categoryResult = await Category.findOne({
+      where: { categoryId: categoryId },
+    }).then((category) => {
+      res.json(category);
+    });
+  } catch (ex) {
+    res.json(ex);
+  }
+});
+
 //update
 router.put('/update_target_category', (req, res) => {
   res.header(
