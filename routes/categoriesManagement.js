@@ -12,6 +12,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 router.use(bodyParser.raw());
 
+//create the model
 const databaseConnection = new Sequelize(
   credentials.databaseName,
   credentials.userName,
@@ -60,10 +61,14 @@ router.post('/create_new_category', (req, res) => {
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
   );
-  console.log(req.body);
-  Category.create(req.body).then((category) => {
-    res.json(category);
-  });
+  try {
+    console.log(req.body);
+    Category.create(req.body).then((category) => {
+      res.json(category);
+    });
+  } catch (ex) {
+    res.json(ex);
+  }
 });
 
 // //fetch all
@@ -74,7 +79,7 @@ router.get('/fetch_all_categories', (req, res) => {
   );
 
   try {
-    Category.findAll().then((categories) => {
+    Category.findAll({ where: { isDeleted: false } }).then((categories) => {
       res.json(categories);
     });
   } catch (ex) {
@@ -91,12 +96,14 @@ router.get('/fetch_category_by_id/:categoryId', async (req, res) => {
 
   try {
     const categoryId = req.params.categoryId;
-    console.log(categoryId);
     const categoryResult = await Category.findOne({
-      where: { categoryId: categoryId },
-    }).then((category) => {
-      res.json(category);
+      where: { categoryId: categoryId, isDeleted: false },
     });
+    if (categoryResult === null) {
+      res.json('No category found!');
+    } else {
+      res.json(categoryResult);
+    }
   } catch (ex) {
     res.json(ex);
   }
@@ -124,6 +131,34 @@ router.put('/update_target_category', (req, res) => {
       }
     ).then((count) => {
       res.json('Rows updated: ' + count);
+    });
+  } catch (ex) {
+    res.json(ex);
+  }
+});
+
+//deletion is paranoid method - modified update method
+router.delete('/delete_target_category/:categoryId', (req, res) => {
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  try {
+    const categoryId = req.body.categoryId;
+    Category.update(
+      {
+        //fields of model to update
+        categoryName: req.body.categoryName,
+        isDeleted: req.body.isDeleted,
+      },
+      {
+        //where clause
+        where: {
+          categoryId: categoryId,
+        },
+      }
+    ).then((count) => {
+      res.json('Rows deleted: ' + count);
     });
   } catch (ex) {
     res.json(ex);
