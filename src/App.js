@@ -2,10 +2,12 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import './App.css';
 import UserStore from './stores/UserStore';
-import LoginForm from './LoginForm';
+// import LoginForm from './LoginForm';
+import LandingPage from './LandingPage';
+import { Dashboard } from './Dashboard';
 // import InputField from './InputField';
-import SubmitButton from './SubmitButton';
-
+// import SubmitButton from './SubmitButton';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 class App extends React.Component {
   //api call here to check session
   async componentDidMount() {
@@ -14,7 +16,7 @@ class App extends React.Component {
         method: 'post',
         headers: {
           Accept: 'application/json',
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
       });
 
@@ -40,7 +42,7 @@ class App extends React.Component {
         method: 'post',
         headers: {
           Accept: 'application/json',
-          'Content-type': 'application/json',
+          'Content-Type': 'application/json',
         },
       });
 
@@ -66,21 +68,16 @@ class App extends React.Component {
       if (UserStore.isLoggedIn) {
         return (
           <div className="App">
-            <div className="container">
-              Welcome {UserStore.username}
-              <SubmitButton
-                text={'Log out'}
-                disabled={false}
-                onClick={() => this.doLogout()}
-              />
-            </div>
+            <div className="container">Welcome {UserStore.username}</div>
           </div>
         );
       }
+
       return (
         <div className="App">
           <div className="container">
-            <LoginForm />
+            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/dashboard" component={Dashboard} />
           </div>
         </div>
       );
