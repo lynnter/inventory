@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
 import './App.css';
 import UserStore from './stores/UserStore';
 // import LoginForm from './LoginForm';
 import LandingPage from './LandingPage';
-import { Dashboard } from './Dashboard';
+import Dashboard from './Dashboard';
 // import InputField from './InputField';
 // import SubmitButton from './SubmitButton';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-class App extends React.Component {
+
+class App extends Component {
+  constructor() {
+    super();
+
+    this.state = {
+      loggedInStatus: 'NOT_LOGGED_IN',
+      user: {},
+    };
+  }
+
   //api call here to check session
   async componentDidMount() {
     try {
@@ -76,8 +86,31 @@ class App extends React.Component {
       return (
         <div className="App">
           <div className="container">
-            <Route exact path="/" component={LandingPage} />
-            <Route exact path="/dashboard" component={Dashboard} />
+            <BrowserRouter>
+              <Switch>
+                <Route
+                  exact
+                  path={'/'}
+                  render={(props) => (
+                    <LandingPage
+                      {...props}
+                      loggedInStatus={this.state.loggedInStatus}
+                    />
+                  )}
+                />
+              </Switch>
+            </BrowserRouter>
+
+            <Route
+              exact
+              path={'/dashboard'}
+              render={(props) => (
+                <Dashboard
+                  {...props}
+                  loggedInStatus={this.state.loggedInStatus}
+                />
+              )}
+            />
           </div>
         </div>
       );

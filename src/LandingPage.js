@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
 // import ReactDOM from 'react-dom';
 import LoginForm from '../src/LoginForm';
 
-function LandingPage() {
-  return (
-    <div>
-      <LoginForm />
-    </div>
-  );
+export default class LandingPage extends Component {
+  render() {
+    return (
+      <div>
+        <LoginForm />
+      </div>
+    );
+  }
 }
-
-export default LandingPage;
