@@ -1,101 +1,31 @@
-import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import axios from 'axios';
-
+import React from 'react';
+import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import PrivateRoute from '../PrivateRoute';
 import Home from './Home';
 import Dashboard from './Dashboard';
+// import Login from './auth/Login';
+// import Registrations from './auth/Registrations';
+import { AuthContext } from './auth/auth';
 
-export default class App extends Component {
-  constructor() {
-    super();
-
-    this.state = {
-      loggedInStatus: 'NOT_LOGGED_IN',
-      user: {},
-    };
-
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
-  }
-
-  checkLoginStatus() {
-    axios
-      .get('http://localhost:3001/logged_in', { withCredentials: true })
-      .then((response) => {
-        if (
-          response.data.logged_in &&
-          this.state.loggedInStatus === 'NOT_LOGGED_IN'
-        ) {
-          this.setState({
-            loggedInStatus: 'LOGGED_IN',
-            user: response.data.user,
-          });
-        } else if (
-          !response.data.logged_in &
-          (this.state.loggedInStatus === 'LOGGED_IN')
-        ) {
-          this.setState({
-            loggedInStatus: 'NOT_LOGGED_IN',
-            user: {},
-          });
-        }
-      })
-      .catch((error) => {
-        console.log('check login error', error);
-      });
-  }
-
-  componentDidMount() {
-    this.checkLoginStatus();
-  }
-
-  handleLogout() {
-    this.setState({
-      loggedInStatus: 'NOT_LOGGED_IN',
-      user: {},
-    });
-  }
-
-  handleLogin(data) {
-    this.setState({
-      loggedInStatus: 'LOGGED_IN',
-      user: data.user,
-    });
-  }
-
-  render() {
-    return (
-      <>
-        <div className="app">
-          <BrowserRouter>
-            <Switch>
-              <Route
-                exact
-                path={'/dashboard'}
-                render={(props) => (
-                  <Dashboard
-                    {...props}
-                    loggedInStatus={this.state.loggedInStatus}
-                  />
-                )}
-              />
-
-              <Route
-                exact
-                path={'/'}
-                render={(props) => (
-                  <Home
-                    {...props}
-                    handleLogin={this.handleLogin}
-                    handleLogout={this.handleLogout}
-                    loggedInStatus={this.state.loggedInStatus}
-                  />
-                )}
-              />
-            </Switch>
-          </BrowserRouter>
+function App(props) {
+  return (
+    <AuthContext.Provider value={false}>
+      <Router>
+        <div>
+          <ul>
+            <li>
+              <Link to="/">Home Page</Link>
+            </li>
+            <li>
+              <Link to="/dashboard">Dashboard</Link>
+            </li>
+          </ul>
+          <Route exact path="/" component={Home} />
+          <PrivateRoute path="/dashboard" component={Dashboard} />
         </div>
-      </>
-    );
-  }
+      </Router>
+    </AuthContext.Provider>
+  );
 }
+
+export default App;
