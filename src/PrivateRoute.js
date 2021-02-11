@@ -1,15 +1,22 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
-import { useAuth } from './components/auth/auth';
+// to get our token from context
+// import { useAuth } from './components/auth/auth';
 
-function PrivateRoute({ component: Component, ...rest }) {
-  const isAuthenticated = useAuth();
+function PrivateRoute({ isAuth, component: Component, ...rest }) {
+  // const { authTokens } = useAuth();
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/" />
+        isAuth ? (
+          <Component {...props} />
+        ) : (
+          <Redirect
+            to={{ pathname: '/login', state: { from: props.location } }}
+          />
+        )
       }
     />
   );

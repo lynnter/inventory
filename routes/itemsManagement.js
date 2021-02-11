@@ -1,10 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const crypto = require('crypto-js');
 const Sequelize = require('sequelize');
 const { QueryTypes } = require('sequelize');
-const credentials = require('../credentials');
+const credentials = require('../src/credentials');
 const { response } = require('express');
 const bodyParser = require('body-parser');
 

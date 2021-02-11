@@ -1,17 +1,19 @@
 // credentials to connect to db
-const credentials = require('./credentials');
+const credentials = require('./src/credentials');
 const express = require('express');
-const bcrypt = require('bcrypt');
-const crypto = require('crypto-js');
 const app = express();
 const PORT = 8085;
 const Sequelize = require('sequelize');
 const path = require('path');
 const { Client } = require('pg');
+const cors = require('cors');
 const connectionString = 'localhost';
 const client = new Client({
   connectionString: connectionString,
 });
+
+app.use(cors());
+
 app.set('port', process.env.PORT || 4000);
 
 const databaseConnection = new Sequelize(
@@ -32,9 +34,15 @@ app.get('/', (req, res) => {
 });
 
 //initialize routes
-const categoriesManagement = require('./routing/categoriesManagement');
-const itemsManagement = require('./routing/itemsManagement');
-const usersManagement = require('./routing/usersManagement');
+const categoriesManagement = require('./routes/categoriesManagement');
+const itemsManagement = require('./routes/itemsManagement');
+const usersManagement = require('./routes/usersManagement');
+
+app.use('/login', (req, res) => {
+  res.send({
+    token: 'test123',
+  });
+});
 
 app.use('/api/categoriesmanagement', categoriesManagement);
 app.use('/api/itemsmanagement', itemsManagement);

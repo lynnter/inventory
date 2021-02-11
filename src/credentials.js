@@ -1,6 +1,6 @@
 module.exports = Object.freeze({
   userName: 'lynntang',
-  password: 'bluescreen1',
+  password: '1234',
   hostName: 'localhost',
   databaseName: 'inventoryapp',
 });

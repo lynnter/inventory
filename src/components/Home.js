@@ -1,7 +1,6 @@
 // import React, { Component } from 'react';
 // import axios from 'axios';
 
-// import Registration from './auth/Registrations';
 // import Login from './auth/Login';
 
 // export default class Home extends Component {

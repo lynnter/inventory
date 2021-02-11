@@ -1,14 +1,20 @@
 import React from 'react';
+import { Button } from '../components/StyleForm';
+import { useAuth } from './auth/auth';
 
-const Dashboard = (props) => {
+function Dashboard(props) {
+  const { setAuthTokens } = useAuth();
+
+  function logOut() {
+    setAuthTokens();
+  }
+
   return (
     <div>
-      <div>
-        <h1>Dashboard</h1>
-        <h1>Status: {props.loggedInStatus}</h1>
-      </div>
+      <div>Dashboard Page</div>
+      <Button onClick={logOut}>Log out</Button>
     </div>
   );
-};
+}
 
 export default Dashboard;
