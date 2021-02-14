@@ -1,66 +1,80 @@
-import React, { useState } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import React, { Component } from 'react';
+// import { Link } from 'react-router-dom';
 import axios from 'axios';
-import logoImg from '../img/logo.jpg';
-import Dashboard from '../Dashboard';
-import { Card, Logo, Form, Input, Button, Error } from '../StyleForm';
+// import logoImg from '../img/logo.jpg';
+import { Card } from '../StyleForm';
 
-function Login(props) {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
-  const [userName, setUserName] = useState('');
-  const [password, setPassword] = useState('');
+export default class Login extends Component {
+  handleSubmit = (e) => {
+    e.preventDefault();
 
-  function postLogin() {
+    const data = {
+      name: this.email,
+      password: this.password,
+    };
+
     axios
-      .post('', {
-        userName,
-        password,
-      })
-      .then((result) => {
-        if (result.status === 200) {
-          setLoggedIn(true);
-        } else {
-          setIsError(true);
-        }
+      .post('http://localhost:3000/api/login', data)
+      .then((res) => {
+        console.log(res);
       })
       .catch((e) => {
-        setIsError(true);
+        console.log(e);
       });
-  }
+  };
 
-  if (isLoggedIn) {
-    return <Redirect to={Dashboard} />;
-  }
+  handleChange = (e) => {
+    this.setState({ id: e.target.value });
+  };
 
-  return (
-    <Card>
-      <Logo src={logoImg} />
-      <Form>
-        <Input
-          type="username"
-          value={userName}
-          onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-          placeholder="email"
-        />
-        <Input
-          type="password"
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          placeholder="password"
-        />
-        <Button onClick={postLogin}>Sign In</Button>
-      </Form>
-      <Link to="/registrations">Don't have an account?</Link>
-      {isError && (
-        <Error>The username or password provided were incorrect!</Error>
-      )}
-    </Card>
-  );
+  render() {
+    return (
+      <Card>
+        {/* <Logo src={logoImg} /> */}
+        {/* <Form onSubmit={this.handleSubmit}>
+          <Input
+            type="email"
+            onChange={(e) => {
+              this.email = e.target.value;
+            }}
+            placeholder="email"
+          />
+          <Input
+            type="password"
+            onChange={(e) => {
+              this.password = e.target.value;
+            }}
+            placeholder="password"
+          />
+          <Button onClick={this.handleSubmit}>Sign In</Button>
+        </Form>
+        <Link to="/registrations">Don't have an account?</Link> */}
+
+        <form onSubmit={this.handleSubmit}>
+          <h3>Log In</h3>
+          <div className="form-group">
+            <label>Email</label>
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Email"
+              onChange={(e) => this.handleChange}
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control"
+              placeholder="Password"
+              onChange={(e) => this.handleChange}
+            />
+          </div>
+
+          <button className="btn btn-primary btn-block">Login</button>
+        </form>
+      </Card>
+    );
+  }
 }
-
-export default Login;

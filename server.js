@@ -13,8 +13,7 @@ const client = new Client({
 });
 
 app.use(cors());
-
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT || 3000);
 
 const databaseConnection = new Sequelize(
   credentials.databaseName,
