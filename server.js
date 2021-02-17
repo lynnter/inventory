@@ -1,36 +1,46 @@
 // credentials to connect to db
-const credentials = require('./src/credentials');
+const mongoose = require('mongoose');
 const express = require('express');
+const session = require('express-session');
 const app = express();
 const PORT = 8085;
 const Sequelize = require('sequelize');
 const path = require('path');
-const { Client } = require('pg');
+const passport = require('passport');
+const passportLocal = require('passport-local').Strategy;
+const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 const cors = require('cors');
 const connectionString = 'localhost';
-const client = new Client({
-  connectionString: connectionString,
-});
 
-app.use(cors());
 app.set('port', process.env.PORT || 3000);
 
-const databaseConnection = new Sequelize(
-  credentials.databaseName,
-  credentials.userName,
-  credentials.password,
-  {
-    dialect: 'postgres',
-    host: credentials.hostName,
-    port: 5432,
-    logging: false,
-    dialectOptions: { requestTimeout: 30000 },
-  }
+// middleware
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  })
 );
-//create endpoints
-app.get('/', (req, res) => {
-  res.send('SUCCESS!!');
+
+app.use(cookieParser('secretcode'));
+
+app.use(
+  session({
+    secret: 'secretcode',
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+
+//create routes
+app.post('/login', (req, res) => {
+  console.log('loggin in here: ', req.body);
 });
+app.post('/register', (req, res) => {
+  console.log('registerin in here: ', req.body);
+});
+app.get('/user', (req, res) => {});
 
 //initialize routes
 const categoriesManagement = require('./routes/categoriesManagement');
