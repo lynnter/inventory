@@ -15,10 +15,16 @@ function Login() {
       },
       withCredentials: true,
       url: 'http://localhost:4000/login',
-    }).then((res) => alert(res));
+    }).then((res) => console.log(res));
   };
 
-  const getUser = () => {};
+  const getUser = () => {
+    axios({
+      method: 'get',
+      withCredentials: true,
+      url: 'http://localhost:4000/getuser',
+    }).then((res) => console.log(res));
+  };
 
   return (
     <>

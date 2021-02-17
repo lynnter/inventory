@@ -4,9 +4,19 @@ function Registration() {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
 
-  const register = () => {};
+  const register = () => {
+    axios({
+      method: 'post',
+      data: {
+        email: registerEmail,
+        password: registerPassword,
+      },
+      withCredentials: true,
+      url: 'http://localhost:4000/register',
+    }).then((res) => console.log(res));
+  };
   return (
-    <div>
+    <>
       <h3>Register</h3>
       <div className="form-group">
         <label>Email</label>
@@ -31,7 +41,7 @@ function Registration() {
       <button className="btn btn-primary btn-block" onClick={register}>
         Register
       </button>
-    </div>
+    </>
   );
 }
 

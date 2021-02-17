@@ -12,7 +12,18 @@ const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
 const connectionString = 'localhost';
+const user = require('./backend/user');
 
+mongoose.connect(
+  'mongodb+srv://Lynnjamin:cG4y4iaroqBpAgzj@cluster0.exme3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  },
+  () => {
+    console.log('Mongoose is connected');
+  }
+);
 // middleware
 app.use(
   cors({
@@ -38,7 +49,18 @@ app.post('/login', (req, res) => {
   console.log('loggin in here: ', req.body);
 });
 app.post('/register', (req, res) => {
-  console.log('registerin in here: ', req.body);
+  User.findOne({ email: req.body.email }, async (err, doc) => {
+    if (err) throw err;
+    if (doc) res.send('User Already Exists');
+    if (!doc) {
+      const newUser = new User({
+        email: req.body.email,
+        password: req.body.password,
+      });
+      await newUser.save();
+      res.send('User Created');
+    }
+  });
 });
 app.get('/user', (req, res) => {});
 
