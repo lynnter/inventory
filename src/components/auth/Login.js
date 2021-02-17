@@ -1,36 +1,27 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 // import { Link } from 'react-router-dom';
-// import logoImg from '../img/logo.jpg';
-import { Card } from '../StyleForm';
 
 function Login() {
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
 
-  const login = () => {};
+  const login = () => {
+    axios({
+      method: 'post',
+      data: {
+        email: loginEmail,
+        password: loginPassword,
+      },
+      withCredentials: true,
+      url: 'http://localhost:4000/login',
+    }).then((res) => alert(res));
+  };
+
+  const getUser = () => {};
 
   return (
-    <Card>
-      {/* <Logo src={logoImg} /> */}
-      {/* <Form onSubmit={this.handleSubmit}>
-          <Input
-            type="email"
-            onChange={(e) => {
-              this.email = e.target.value;
-            }}
-            placeholder="email"
-          />
-          <Input
-            type="password"
-            onChange={(e) => {
-              this.password = e.target.value;
-            }}
-            placeholder="password"
-          />
-          <Button onClick={this.handleSubmit}>Sign In</Button>
-        </Form>
-        <Link to="/registrations">Don't have an account?</Link> */}
-
+    <>
       <h3>Log In</h3>
       <div className="form-group">
         <label>Email</label>
@@ -52,15 +43,15 @@ function Login() {
         />
       </div>
 
-      <button className="btn btn-primary btn-block" onclick={login}>
+      <button className="btn btn-primary btn-block" onClick={login}>
         Login
       </button>
 
       <div>
         <h1>Get User</h1>
-        <button>Submit</button>
+        <button onClick={getUser}>Submit</button>
       </div>
-    </Card>
+    </>
   );
 }
 

@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const express = require('express');
 const session = require('express-session');
 const app = express();
-const PORT = 8085;
 const Sequelize = require('sequelize');
 const path = require('path');
+const bodyParser = require('body-parser');
 const passport = require('passport');
 const passportLocal = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
@@ -13,16 +13,16 @@ const bcrypt = require('bcrypt');
 const cors = require('cors');
 const connectionString = 'localhost';
 
-app.set('port', process.env.PORT || 3000);
-
 // middleware
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3001',
     credentials: true,
   })
 );
 
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 app.use(cookieParser('secretcode'));
 
 app.use(
@@ -57,5 +57,6 @@ app.use('/api/categoriesmanagement', categoriesManagement);
 app.use('/api/itemsmanagement', itemsManagement);
 app.use('/api/usersmanagement', usersManagement);
 
-app.listen(PORT);
-console.log('server is running on http://127.0.0.1:' + PORT);
+app.listen(4000, () => {
+  console.log('Server has started');
+});
