@@ -58,3 +58,19 @@ body, html, #root, .app, .container {
     background: #fff;
     cursor: pointer;
    }
+
+   nav {
+     display: flex;
+     justify-content: space-around;
+     align-items: center;
+     min-height: 10vh;
+     background: #565656;
+     color: white;
+   }
+
+   .nav-links{
+     width: 50%;
+     display: flex;
+     justify-content: space-around;
+     list-style: none;
+   }

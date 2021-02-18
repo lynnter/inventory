@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 function Registration() {
   const [registerEmail, setRegisterEmail] = useState('');
@@ -12,9 +13,10 @@ function Registration() {
         password: registerPassword,
       },
       withCredentials: true,
-      url: 'http://localhost:4000/register',
+      url: 'http://localhost:4000/registration',
     }).then((res) => console.log(res));
   };
+
   return (
     <>
       <h3>Register</h3>

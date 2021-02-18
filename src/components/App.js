@@ -1,27 +1,16 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Link, Route } from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 import PrivateRoute from '../PrivateRoute';
 import Home from './Home';
 import Dashboard from './Dashboard';
+import Registration from './auth/Registration';
 import Login from './auth/Login';
-import { AuthContext } from './auth/auth';
 
 function App(props) {
-  const [authTokens, setAuthTokens] = useState();
-
-  const setTokens = (data) => {
-    localStorage.setItem('tokens', JSON.stringify(data));
-    setAuthTokens(data);
-  };
-
-  if (!authTokens) {
-    return <Login setAuthToken={setAuthTokens} />;
-  }
-
   return (
-    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-      <Router>
-        <div>
+    <Router>
+      <div>
+        <nav>
           <ul>
             <li>
               <Link to="/">Home Page</Link>
@@ -29,13 +18,22 @@ function App(props) {
             <li>
               <Link to="/dashboard">Dashboard</Link>
             </li>
+            <li>
+              <Link to="/registration">Register</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
           </ul>
+        </nav>
+        <Switch>
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
+          <Route path="/registration" component={Registration} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
-        </div>
-      </Router>
-    </AuthContext.Provider>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
