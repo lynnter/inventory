@@ -5,6 +5,7 @@ import Home from './Home';
 import Dashboard from './Dashboard';
 import Registration from './auth/Registration';
 import Login from './auth/Login';
+import NotFound from './NotFound';
 
 function App(props) {
   return (
@@ -30,6 +31,7 @@ function App(props) {
           <Route exact path="/" component={Home} />
           <Route path="/login" component={Login} />
           <Route path="/registration" component={Registration} />
+          <Route component={NotFound} />
           <PrivateRoute path="/dashboard" component={Dashboard} />
         </Switch>
       </div>

@@ -8,14 +8,16 @@ const passportLocal = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const cors = require('cors');
-const User = require('./backend/user');
+const User = require('./src/models/user');
 
 const mongoose = require('mongoose');
-mongoose.connect(
-  'mongodb+srv://Lynnjamin:cG4y4iaroqBpAgzj@cluster0.exme3.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
-  { useNewUrlParser: true, useUnifiedTopology: true },
-  () => console.log('Mongoose is connected')
-);
+mongoose
+  .connect(
+    'mongodb+srv://Lynnjamin:mongoDB9000@cluster0.exme3.mongodb.net/inventoryApp?retryWrites=true&w=majority                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => console.log('Mongoose is connected'))
+  .catch((err) => console.log(err));
 
 // middleware
 app.use(
@@ -41,6 +43,7 @@ app.use(
 app.post('/login', (req, res) => {
   console.log(req.body);
 });
+
 app.post('/registration', (req, res) => {
   User.findOne({ email: req.body.email }, async (err, doc) => {
     if (err) throw err;
@@ -55,7 +58,23 @@ app.post('/registration', (req, res) => {
     }
   });
 });
-app.get('/user', (req, res) => {});
+
+//async task
+app.get('/get-user', (req, res) => {
+  console.log(req.body);
+  const user = new User({
+    email: 'test@test.com',
+    password: 'testpw',
+  })
+    .then((result) => {
+      res.send(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  user.save();
+});
 
 //initialize routes
 const categoriesManagement = require('./routes/categoriesManagement');
